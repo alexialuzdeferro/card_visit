@@ -139,7 +139,7 @@
             align-items: center;
             min-height: 100vh;
             padding: 20px;
-            overflow: hidden;
+            overflow: auto;
             position: relative;
         }
 
@@ -165,21 +165,14 @@
             pointer-events: none;
         }
 
-        /* Floating petals — soft */
-        .petal {
+        /* ─── SVG SCENE BACKGROUND ─── */
+        #scene-svg {
             position: fixed;
+            inset: 0;
+            width: 100%;
+            height: 100%;
             pointer-events: none;
-            font-size: 14px;
-            animation: driftDown linear infinite;
-            opacity: 0;
             z-index: 0;
-        }
-
-        @keyframes driftDown {
-            0%   { transform: translateY(-4vh) translateX(0px) rotate(0deg); opacity: 0; }
-            8%   { opacity: 0.35; }
-            90%  { opacity: 0.2; }
-            100% { transform: translateY(108vh) translateX(30px) rotate(300deg); opacity: 0; }
         }
 
         /* ─── Card ─── */
@@ -688,7 +681,356 @@
     </style>
 </head>
 <body>
-    <div id="particles"></div>
+<!-- ═══ CENA NOTURNA SVG — ARTE VISCERAL ═══ -->
+<svg id="scene-svg" viewBox="0 0 800 600" preserveAspectRatio="xMidYMid slice"
+     xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="presentation">
+  <defs>
+
+    <!-- Céu gradiente — noite profunda -->
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%"   stop-color="#03010a"/>
+      <stop offset="40%"  stop-color="#07030f"/>
+      <stop offset="75%"  stop-color="#0d050c"/>
+      <stop offset="100%" stop-color="#160010"/>
+    </linearGradient>
+
+    <!-- Névoa do chão -->
+    <linearGradient id="fog" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%"  stop-color="#1a0818" stop-opacity="0"/>
+      <stop offset="60%" stop-color="#1a0818" stop-opacity="0.55"/>
+      <stop offset="100%" stop-color="#0d0408" stop-opacity="0.85"/>
+    </linearGradient>
+
+    <!-- Halo da lua -->
+    <radialGradient id="moonHalo" cx="50%" cy="50%" r="50%">
+      <stop offset="0%"  stop-color="#ffe8c0" stop-opacity="0.18"/>
+      <stop offset="40%" stop-color="#c8a060" stop-opacity="0.07"/>
+      <stop offset="100%" stop-color="#000" stop-opacity="0"/>
+    </radialGradient>
+
+    <!-- Chama da vela -->
+    <radialGradient id="flame1" cx="50%" cy="70%" r="50%">
+      <stop offset="0%"   stop-color="#fff7c0" stop-opacity="1"/>
+      <stop offset="35%"  stop-color="#ffb830" stop-opacity="0.9"/>
+      <stop offset="100%" stop-color="#8B0000" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="flame2" cx="50%" cy="70%" r="50%">
+      <stop offset="0%"   stop-color="#fff0a0" stop-opacity="1"/>
+      <stop offset="40%"  stop-color="#ff9010" stop-opacity="0.85"/>
+      <stop offset="100%" stop-color="#5c0000" stop-opacity="0"/>
+    </radialGradient>
+
+    <!-- Brilho das estrelas -->
+    <radialGradient id="starGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%"  stop-color="#fff" stop-opacity="1"/>
+      <stop offset="100%" stop-color="#fff" stop-opacity="0"/>
+    </radialGradient>
+
+    <!-- Filtro névoa suave -->
+    <filter id="blur3" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="3"/>
+    </filter>
+    <filter id="blur8" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="8"/>
+    </filter>
+    <filter id="blur20" x="-60%" y="-60%" width="220%" height="220%">
+      <feGaussianBlur stdDeviation="20"/>
+    </filter>
+    <filter id="glow-red" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="4" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+
+    <!-- Clip para lua (define a meia-lua) -->
+    <clipPath id="moonClip">
+      <circle cx="0" cy="0" r="36"/>
+    </clipPath>
+
+  </defs>
+
+  <!-- ── CÉU ── -->
+  <rect width="800" height="600" fill="url(#sky)"/>
+
+  <!-- ── ESTRELAS FIXAS ── -->
+  <g opacity="0.7">
+    <circle cx="60"  cy="30"  r="0.8" fill="#fff"/>
+    <circle cx="130" cy="18"  r="0.5" fill="#fff"/>
+    <circle cx="200" cy="45"  r="1.1" fill="#fffbe0"/>
+    <circle cx="290" cy="22"  r="0.6" fill="#fff"/>
+    <circle cx="350" cy="55"  r="0.9" fill="#fff"/>
+    <circle cx="420" cy="15"  r="0.5" fill="#fff"/>
+    <circle cx="490" cy="40"  r="1.2" fill="#fffbe0"/>
+    <circle cx="560" cy="20"  r="0.7" fill="#fff"/>
+    <circle cx="620" cy="60"  r="0.6" fill="#fff"/>
+    <circle cx="700" cy="28"  r="1.0" fill="#fffbe0"/>
+    <circle cx="750" cy="50"  r="0.5" fill="#fff"/>
+    <circle cx="780" cy="15"  r="0.8" fill="#fff"/>
+    <circle cx="100" cy="80"  r="0.5" fill="#fff"/>
+    <circle cx="170" cy="100" r="0.6" fill="#fff"/>
+    <circle cx="450" cy="80"  r="0.7" fill="#fff"/>
+    <circle cx="660" cy="90"  r="0.5" fill="#fff"/>
+    <circle cx="30"  cy="110" r="0.4" fill="#fff"/>
+    <circle cx="740" cy="110" r="0.6" fill="#fff"/>
+  </g>
+
+  <!-- Estrelas piscando (animadas) -->
+  <circle cx="250" cy="35" r="1.3" fill="#fff">
+    <animate attributeName="opacity" values="0.9;0.2;0.9" dur="3.1s" repeatCount="indefinite"/>
+  </circle>
+  <circle cx="580" cy="48" r="1.1" fill="#fffbe0">
+    <animate attributeName="opacity" values="0.6;1;0.6" dur="2.4s" repeatCount="indefinite"/>
+  </circle>
+  <circle cx="720" cy="75" r="0.9" fill="#fff">
+    <animate attributeName="opacity" values="1;0.1;1" dur="4.2s" repeatCount="indefinite"/>
+  </circle>
+  <circle cx="80" cy="65" r="1.0" fill="#fff">
+    <animate attributeName="opacity" values="0.5;1;0.5" dur="3.7s" repeatCount="indefinite"/>
+  </circle>
+
+  <!-- ── LUA CRESCENTE ── -->
+  <g transform="translate(630, 100)">
+    <!-- Halo difuso -->
+    <circle cx="0" cy="0" r="90" fill="url(#moonHalo)" filter="url(#blur20)"/>
+    <!-- Corpo lunar -->
+    <circle cx="0" cy="0" r="36" fill="#f0d8a0" opacity="0.92"/>
+    <!-- Sombra que cria a meia-lua (corta com círculo deslocado) -->
+    <circle cx="14" cy="-4" r="32" fill="#060310"/>
+    <!-- Halo suave da borda -->
+    <circle cx="0" cy="0" r="37" fill="none" stroke="#e8c880" stroke-width="1.5" opacity="0.3" filter="url(#blur3)"/>
+    <!-- Crateras sutis -->
+    <circle cx="-10" cy="8"  r="3.5" fill="#d8c490" opacity="0.4"/>
+    <circle cx="-18" cy="-5" r="2.2" fill="#d0bc88" opacity="0.35"/>
+    <circle cx="-5"  cy="18" r="1.8" fill="#d8c490" opacity="0.3"/>
+  </g>
+
+  <!-- ── NUVENS SOMBRIAS ── -->
+  <g opacity="0.55" filter="url(#blur8)">
+    <ellipse cx="120" cy="85"  rx="140" ry="28" fill="#1a0818"/>
+    <ellipse cx="680" cy="75"  rx="160" ry="24" fill="#1a0818"/>
+    <ellipse cx="400" cy="130" rx="200" ry="22" fill="#120610"/>
+  </g>
+  <!-- Nuvem movendo lentamente -->
+  <g filter="url(#blur8)">
+    <ellipse cx="300" cy="95" rx="180" ry="20" fill="#180614" opacity="0.45">
+      <animateTransform attributeName="transform" type="translate"
+        values="0,0; 40,0; 0,0" dur="40s" repeatCount="indefinite"/>
+    </ellipse>
+  </g>
+
+  <!-- ── MUROS DO CEMITÉRIO ── -->
+  <!-- Muro esquerdo -->
+  <rect x="0" y="430" width="180" height="170" fill="#0c0308" rx="2"/>
+  <rect x="0" y="425" width="185" height="12" fill="#120508" rx="1"/>
+  <!-- Ameia do muro esq -->
+  <rect x="10"  y="415" width="20" height="16" fill="#120508" rx="1"/>
+  <rect x="45"  y="415" width="20" height="16" fill="#120508" rx="1"/>
+  <rect x="80"  y="415" width="20" height="16" fill="#120508" rx="1"/>
+  <rect x="115" y="415" width="20" height="16" fill="#120508" rx="1"/>
+  <rect x="150" y="415" width="20" height="16" fill="#120508" rx="1"/>
+
+  <!-- Muro direito -->
+  <rect x="620" y="430" width="180" height="170" fill="#0c0308" rx="2"/>
+  <rect x="615" y="425" width="185" height="12" fill="#120508" rx="1"/>
+  <rect x="625" y="415" width="20" height="16" fill="#120508" rx="1"/>
+  <rect x="660" y="415" width="20" height="16" fill="#120508" rx="1"/>
+  <rect x="695" y="415" width="20" height="16" fill="#120508" rx="1"/>
+  <rect x="730" y="415" width="20" height="16" fill="#120508" rx="1"/>
+  <rect x="765" y="415" width="20" height="16" fill="#120508" rx="1"/>
+
+  <!-- Portão central -->
+  <rect x="340" y="390" width="120" height="210" fill="#08020a" rx="1"/>
+  <!-- Grades do portão -->
+  <line x1="355" y1="390" x2="355" y2="600" stroke="#1c0c14" stroke-width="3"/>
+  <line x1="375" y1="390" x2="375" y2="600" stroke="#1c0c14" stroke-width="3"/>
+  <line x1="395" y1="390" x2="395" y2="600" stroke="#1c0c14" stroke-width="3"/>
+  <line x1="415" y1="390" x2="415" y2="600" stroke="#1c0c14" stroke-width="3"/>
+  <line x1="435" y1="390" x2="435" y2="600" stroke="#1c0c14" stroke-width="3"/>
+  <line x1="455" y1="390" x2="455" y2="600" stroke="#1c0c14" stroke-width="3"/>
+  <!-- Barras horizontais do portão -->
+  <line x1="340" y1="430" x2="460" y2="430" stroke="#1c0c14" stroke-width="2.5"/>
+  <line x1="340" y1="480" x2="460" y2="480" stroke="#1c0c14" stroke-width="2.5"/>
+  <!-- Pontas do portão -->
+  <polygon points="355,390 362,376 369,390" fill="#1c0c14"/>
+  <polygon points="375,390 382,374 389,390" fill="#1c0c14"/>
+  <polygon points="395,390 402,372 409,390" fill="#1c0c14"/>
+  <polygon points="415,390 422,374 429,390" fill="#1c0c14"/>
+  <polygon points="435,390 442,376 449,390" fill="#1c0c14"/>
+  <!-- Arco do portão -->
+  <path d="M340,390 Q400,350 460,390" fill="none" stroke="#1c0c14" stroke-width="3"/>
+  <!-- Ferrolho central -->
+  <circle cx="400" cy="455" r="5" fill="#2a1020" stroke="#3a1828" stroke-width="1"/>
+
+  <!-- ── CRUZES ── -->
+  <!-- Cruz 1 — esquerda fundo -->
+  <g transform="translate(100, 310)" opacity="0.55">
+    <rect x="-3" y="-45" width="6" height="90" fill="#1a0810" rx="1"/>
+    <rect x="-22" y="-18" width="44" height="6" fill="#1a0810" rx="1"/>
+  </g>
+  <!-- Cruz 2 — direita fundo -->
+  <g transform="translate(680, 295)" opacity="0.5">
+    <rect x="-3" y="-50" width="6" height="95" fill="#1a0810" rx="1"/>
+    <rect x="-24" y="-20" width="48" height="6" fill="#1a0810" rx="1"/>
+  </g>
+  <!-- Cruz 3 — esq meio -->
+  <g transform="translate(210, 350)" opacity="0.65">
+    <rect x="-2.5" y="-38" width="5" height="76" fill="#200c16" rx="1"/>
+    <rect x="-18" y="-14" width="36" height="5" fill="#200c16" rx="1"/>
+  </g>
+  <!-- Cruz 4 — dir meio -->
+  <g transform="translate(560, 345)" opacity="0.6">
+    <rect x="-2.5" y="-40" width="5" height="78" fill="#200c16" rx="1"/>
+    <rect x="-20" y="-15" width="40" height="5" fill="#200c16" rx="1"/>
+  </g>
+  <!-- Cruz grande central fundo -->
+  <g transform="translate(400, 330)" opacity="0.35">
+    <rect x="-4" y="-65" width="8" height="120" fill="#2a0c1a" rx="1"/>
+    <rect x="-30" y="-28" width="60" height="8" fill="#2a0c1a" rx="1"/>
+  </g>
+
+  <!-- ── CIPRESTES ── -->
+  <!-- Cipreste esq 1 -->
+  <ellipse cx="50"  cy="340" rx="18" ry="80" fill="#0c0510" opacity="0.8"/>
+  <ellipse cx="50"  cy="340" rx="12" ry="75" fill="#100618" opacity="0.6"/>
+  <!-- Cipreste esq 2 -->
+  <ellipse cx="155" cy="360" rx="14" ry="65" fill="#0c0510" opacity="0.7"/>
+  <!-- Cipreste dir 1 -->
+  <ellipse cx="750" cy="335" rx="18" ry="82" fill="#0c0510" opacity="0.8"/>
+  <ellipse cx="750" cy="335" rx="12" ry="76" fill="#100618" opacity="0.6"/>
+  <!-- Cipreste dir 2 -->
+  <ellipse cx="640" cy="355" rx="14" ry="66" fill="#0c0510" opacity="0.7"/>
+  <!-- Cipreste fundo esq -->
+  <ellipse cx="270" cy="380" rx="10" ry="55" fill="#0a040e" opacity="0.5"/>
+  <!-- Cipreste fundo dir -->
+  <ellipse cx="520" cy="375" rx="10" ry="55" fill="#0a040e" opacity="0.5"/>
+
+  <!-- ── LÁPIDES ── -->
+  <!-- Lápide 1 -->
+  <g transform="translate(130, 400)">
+    <rect x="-14" y="-35" width="28" height="55" fill="#120810" rx="2"/>
+    <path d="M-14,-35 Q0,-52 14,-35" fill="#120810"/>
+    <rect x="-8" y="-20" width="16" height="1.5" fill="#200c18" opacity="0.7"/>
+    <rect x="-6" y="-14" width="12" height="1.5" fill="#200c18" opacity="0.5"/>
+  </g>
+  <!-- Lápide 2 -->
+  <g transform="translate(220, 415)">
+    <rect x="-12" y="-30" width="24" height="50" fill="#140910" rx="2"/>
+    <path d="M-12,-30 Q0,-46 12,-30" fill="#140910"/>
+  </g>
+  <!-- Lápide 3 -->
+  <g transform="translate(555, 410)">
+    <rect x="-13" y="-32" width="26" height="52" fill="#120810" rx="2"/>
+    <path d="M-13,-32 Q0,-50 13,-32" fill="#120810"/>
+    <rect x="-7" y="-18" width="14" height="1.5" fill="#200c18" opacity="0.6"/>
+  </g>
+  <!-- Lápide 4 -->
+  <g transform="translate(650, 420)">
+    <rect x="-11" y="-28" width="22" height="46" fill="#140910" rx="2"/>
+    <path d="M-11,-28 Q0,-44 11,-28" fill="#140910"/>
+  </g>
+
+  <!-- ── SOLO DO CEMITÉRIO ── -->
+  <ellipse cx="400" cy="570" rx="420" ry="60" fill="#0e0508" opacity="0.9"/>
+  <!-- Grama morta estilizada -->
+  <g stroke="#1a0812" stroke-width="1.2" opacity="0.5">
+    <line x1="70"  y1="445" x2="65"  y2="425"/>
+    <line x1="80"  y1="448" x2="82"  y2="428"/>
+    <line x1="90"  y1="442" x2="88"  y2="422"/>
+    <line x1="170" y1="440" x2="168" y2="420"/>
+    <line x1="180" y1="443" x2="183" y2="423"/>
+    <line x1="580" y1="442" x2="578" y2="422"/>
+    <line x1="592" y1="438" x2="595" y2="418"/>
+    <line x1="700" y1="444" x2="698" y2="424"/>
+    <line x1="712" y1="441" x2="715" y2="421"/>
+  </g>
+
+  <!-- ── VELAS ── -->
+  <!-- Vela esq -->
+  <g transform="translate(290, 440)">
+    <!-- cera -->
+    <rect x="-4" y="-22" width="8" height="30" fill="#e8d0b0" opacity="0.85" rx="1"/>
+    <!-- pavio -->
+    <line x1="0" y1="-22" x2="0" y2="-28" stroke="#5a3010" stroke-width="1.2"/>
+    <!-- chama corpo -->
+    <ellipse cx="0" cy="-34" rx="5" ry="9" fill="url(#flame1)" opacity="0.95" filter="url(#blur3)">
+      <animate attributeName="ry" values="9;11;8;10;9" dur="1.6s" repeatCount="indefinite"/>
+      <animate attributeName="rx" values="5;4;6;4;5" dur="1.6s" repeatCount="indefinite"/>
+      <animate attributeName="cy" values="-34;-36;-33;-35;-34" dur="1.6s" repeatCount="indefinite"/>
+    </ellipse>
+    <!-- brilho do chão -->
+    <ellipse cx="0" cy="8" rx="18" ry="4" fill="#c87010" opacity="0.08" filter="url(#blur8)"/>
+  </g>
+
+  <!-- Vela dir -->
+  <g transform="translate(510, 440)">
+    <rect x="-4" y="-22" width="8" height="30" fill="#e8d0b0" opacity="0.85" rx="1"/>
+    <line x1="0" y1="-22" x2="0" y2="-28" stroke="#5a3010" stroke-width="1.2"/>
+    <ellipse cx="0" cy="-34" rx="5" ry="9" fill="url(#flame2)" opacity="0.95" filter="url(#blur3)">
+      <animate attributeName="ry" values="9;7;11;8;9" dur="2.1s" repeatCount="indefinite"/>
+      <animate attributeName="rx" values="5;6;4;5;5" dur="2.1s" repeatCount="indefinite"/>
+      <animate attributeName="cy" values="-34;-32;-36;-34;-34" dur="2.1s" repeatCount="indefinite"/>
+    </ellipse>
+    <ellipse cx="0" cy="8" rx="18" ry="4" fill="#c87010" opacity="0.08" filter="url(#blur8)"/>
+  </g>
+
+  <!-- ── NÉVOA RASTEIRA ANIMADA ── -->
+  <g opacity="0.6">
+    <ellipse cx="200" cy="500" rx="280" ry="55" fill="#200d18" filter="url(#blur8)">
+      <animateTransform attributeName="transform" type="translate"
+        values="0,0; 25,0; -10,0; 0,0" dur="18s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="0.6;0.4;0.6" dur="10s" repeatCount="indefinite"/>
+    </ellipse>
+    <ellipse cx="600" cy="510" rx="260" ry="50" fill="#1a0814" filter="url(#blur8)">
+      <animateTransform attributeName="transform" type="translate"
+        values="0,0; -20,0; 10,0; 0,0" dur="22s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="0.5;0.7;0.5" dur="12s" repeatCount="indefinite"/>
+    </ellipse>
+    <ellipse cx="400" cy="520" rx="320" ry="60" fill="#160a10" filter="url(#blur20)">
+      <animateTransform attributeName="transform" type="translate"
+        values="0,0; 15,-5; -15,5; 0,0" dur="28s" repeatCount="indefinite"/>
+    </ellipse>
+  </g>
+
+  <!-- ── NÉVOA DE COBERTURA FINAL ── -->
+  <rect x="0" y="370" width="800" height="230" fill="url(#fog)" opacity="0.75"/>
+
+  <!-- ── PARTÍCULAS DE NÉVOA ASCENDENTE ── -->
+  <g opacity="0.3" filter="url(#blur8)">
+    <circle cx="320" cy="480" r="22" fill="#3a0820">
+      <animate attributeName="cy" values="480;440;480" dur="7s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="0.3;0;0.3" dur="7s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="470" cy="490" r="18" fill="#2e0618">
+      <animate attributeName="cy" values="490;445;490" dur="9s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="0.25;0;0.25" dur="9s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="200" cy="470" r="15" fill="#380720">
+      <animate attributeName="cy" values="470;430;470" dur="11s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="0.2;0;0.2" dur="11s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="580" cy="475" r="20" fill="#2e0618">
+      <animate attributeName="cy" values="475;435;475" dur="8s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="0.28;0;0.28" dur="8s" repeatCount="indefinite"/>
+    </circle>
+  </g>
+
+  <!-- ── SIGILO CENTRAL — brilho vermelho etéreo ── -->
+  <g transform="translate(400, 250)" opacity="0.12" filter="url(#blur3)">
+    <circle cx="0" cy="0" r="60" fill="none" stroke="#8B0000" stroke-width="0.6">
+      <animate attributeName="opacity" values="0.12;0.22;0.12" dur="5s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="0" cy="0" r="40" fill="none" stroke="#B8860B" stroke-width="0.4">
+      <animate attributeName="opacity" values="0.10;0.18;0.10" dur="7s" repeatCount="indefinite"/>
+    </circle>
+    <line x1="0" y1="-60" x2="0" y2="60" stroke="#8B0000" stroke-width="0.4" opacity="0.5"/>
+    <line x1="-60" y1="0" x2="60" y2="0" stroke="#8B0000" stroke-width="0.4" opacity="0.5"/>
+    <line x1="-42" y1="-42" x2="42" y2="42" stroke="#8B0000" stroke-width="0.3" opacity="0.35"/>
+    <line x1="42" y1="-42" x2="-42" y2="42" stroke="#8B0000" stroke-width="0.3" opacity="0.35"/>
+  </g>
+
+  <!-- ── BRILHO SUTIL DA LUA NO CHÃO ── -->
+  <ellipse cx="630" cy="450" rx="100" ry="18" fill="#b8940030" filter="url(#blur20)" opacity="0.4"/>
+
+</svg>
 
     <div class="flip-card" id="flipCard">
         <div class="flip-card-inner">
@@ -704,7 +1046,7 @@
                 <div class="top-pill">Alexia Melusine</div>
 
                 <div class="front-overlay">
-                    <h1 class="name-overlay">Alexia Melusine 🌹</h1>
+                    <h1 class="name-overlay">Alexia Melusine</h1>
                     <p class="title-overlay">Criadora de Conteúdo</p>
                     <p class="touch-hint">Toque para ver mais</p>
                 </div>
@@ -823,24 +1165,7 @@
             }
         });
 
-        // Petals
-        const PETALS = ['🌹','✦','·','◦'];
-        function createPetal() {
-            const p = document.createElement('div');
-            p.className = 'petal';
-            p.textContent = PETALS[Math.floor(Math.random() * PETALS.length)];
-            p.style.left = Math.random() * 100 + '%';
-            p.style.fontSize = (10 + Math.random() * 8) + 'px';
-            p.style.animationDuration = (12 + Math.random() * 10) + 's';
-            p.style.animationDelay = Math.random() * 3 + 's';
-            p.style.opacity = 0;
-            document.getElementById('particles').appendChild(p);
-            setTimeout(() => p.remove(), 25000);
-        }
-
         window.addEventListener('load', () => {
-            setInterval(createPetal, 1800);
-            for (let i = 0; i < 4; i++) setTimeout(createPetal, i * 400);
             if (initSupabase()) handleVisitCounter();
         });
     </script>
